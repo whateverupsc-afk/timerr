@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Time Tracker & Countdown</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#countdown">Countdown</a></li>
+                <li><a href="#daily">Daily Tracker</a></li>
+                <li><a href="#weekly">Weekly Report</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="countdown" class="countdown-section">
+            <h1>Countdown to Target Date</h1>
+            <p>Target: May 24, 2026 (Edit in script.js for your date)</p>
+            <div id="timer" class="timer-display">
+                <div class="time-unit">
+                    <span id="days">00</span>
+                    <span>Days</span>
+                </div>
+                <div class="time-unit">
+                    <span id="hours">00</span>
+                    <span>Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span id="minutes">00</span>
+                    <span>Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span id="seconds">00</span>
+                    <span>Seconds</span>
+                </div>
+                <div class="time-unit">
+                    <span id="milliseconds">000</span>
+                    <span>ms</span>
+                </div>
+            </div>
+            <p>This is your main back-count timer from today (Nov 09, 2025) to the target. It updates in real-time.</p>
+        </section>
+
+        <section id="daily" class="daily-section">
+            <h2>Today's Time Tracker (24-Hour Cycle)</h2>
+            <p>Log your productive and wasted hours for today. Total adds to overall progress.</p>
+            <div class="tracker-inputs">
+                <input type="number" id="productive-hours" min="0" max="24" placeholder="Productive Hours (e.g., 8)" value="0">
+                <button onclick="logDailyTime()">Log Today's Time</button>
+            </div>
+            <div id="daily-summary" class="daily-summary">
+                <p>Productive: <span id="daily-productive">0</span>h | Wasted: <span id="daily-wasted">0</span>h | Total Tracked: <span id="daily-total">0</span>h</p>
+            </div>
+            <canvas id="dailyChart" width="400" height="200"></canvas>
+            <p>Small daily pie chart: Green = Productive, Red = Wasted.</p>
+        </section>
+
+        <section id="weekly" class="weekly-section">
+            <h2>Weekly Progress Report</h2>
+            <p>Aggregated from daily logs. Shows productive hours per day this week.</p>
+            <canvas id="weeklyChart" width="600" height="300"></canvas>
+            <p>Bar chart: Days of the week (Sun-Sat). Customize colors in script.js.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Your Personal Tracker. Built with AI – Fully Customizable & Free.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
