@@ -3,76 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Time Tracker & Countdown</title>
+    <meta name="description" content="AFK Timer for UPSC: Track productivity, to-dos, calendar, and countdown to May 24, 2026.">
+    <title>AFK Timer - UPSC Productivity Tracker</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- For pie/line charts -->
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#countdown">Countdown</a></li>
-                <li><a href="#daily">Daily Tracker</a></li>
-                <li><a href="#weekly">Weekly Report</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="countdown" class="countdown-section">
-            <h1>Countdown to Target Date</h1>
-            <p>Target: May 24, 2026 (Edit in script.js for your date)</p>
-            <div id="timer" class="timer-display">
-                <div class="time-unit">
-                    <span id="days">00</span>
-                    <span>Days</span>
-                </div>
-                <div class="time-unit">
-                    <span id="hours">00</span>
-                    <span>Hours</span>
-                </div>
-                <div class="time-unit">
-                    <span id="minutes">00</span>
-                    <span>Minutes</span>
-                </div>
-                <div class="time-unit">
-                    <span id="seconds">00</span>
-                    <span>Seconds</span>
-                </div>
-                <div class="time-unit">
-                    <span id="milliseconds">000</span>
-                    <span>ms</span>
-                </div>
+    <div class="container">
+        <h1>AFK Timer for UPSC Warriors</h1>
+        
+        <!-- Calendar Tracker -->
+        <section class="calendar">
+            <h2>Productivity Calendar</h2>
+            <div class="calendar-controls">
+                <button id="prev-month">&lt; Prev</button>
+                <span id="month-year"></span>
+                <button id="next-month">Next &gt;</button>
             </div>
-            <p>This is your main back-count timer from today (Nov 09, 2025) to the target. It updates in real-time.</p>
-        </section>
-
-        <section id="daily" class="daily-section">
-            <h2>Today's Time Tracker (24-Hour Cycle)</h2>
-            <p>Log your productive and wasted hours for today. Total adds to overall progress.</p>
-            <div class="tracker-inputs">
-                <input type="number" id="productive-hours" min="0" max="24" placeholder="Productive Hours (e.g., 8)" value="0">
-                <button onclick="logDailyTime()">Log Today's Time</button>
+            <table id="calendar-table">
+                <thead>
+                    <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="calendar-summary">
+                <p>Week (7 days): <span id="week-progress">0%</span> Productive</p>
+                <p>15 Days: <span id="15days-progress">0%</span> Productive</p>
+                <p>Month: <span id="month-progress">0%</span> Productive</p>
             </div>
-            <div id="daily-summary" class="daily-summary">
-                <p>Productive: <span id="daily-productive">0</span>h | Wasted: <span id="daily-wasted">0</span>h | Total Tracked: <span id="daily-total">0</span>h</p>
+        </section>
+        
+        <!-- Countdown Section -->
+        <section class="countdown">
+            <h2>Countdown to Exam</h2>
+            <label for="custom-date">Custom End Date (or use default May 24, 2026):</label>
+            <input type="date" id="custom-date">
+            <button id="use-custom">Apply Custom</button>
+            <label><input type="checkbox" id="show-hours"> Show Total Hours</label>
+            <div id="countdown-display">Calculating...</div>
+        </section>
+        
+        <!-- Pie/Line Chart for Productivity -->
+        <section class="chart">
+            <h3>Productivity Chart (Active vs AFK)</h3>
+            <label for="chart-type">Chart Type:</label>
+            <select id="chart-type">
+                <option value="pie">Pie Chart (Overall Split)</option>
+                <option value="line">Line Chart (Daily Trends)</option>
+            </select>
+            <label for="chart-start">From Date:</label>
+            <input type="date" id="chart-start">
+            <label for="chart-end">To Date:</label>
+            <input type="date" id="chart-end">
+            <button id="update-chart">Update Chart</button>
+            <canvas id="productivity-chart" width="400" height="200"></canvas>
+        </section>
+        
+        <!-- To-Do Section -->
+        <section class="todo">
+            <h3>To-Do Tracker</h3>
+            <div class="todo-controls">
+                <label for="todo-start">From Date:</label>
+                <input type="date" id="todo-start">
+                <label for="todo-end">To Date:</label>
+                <input type="date" id="todo-end">
+                <button id="generate-todo">Generate Grid</button>
             </div>
-            <canvas id="dailyChart" width="400" height="200"></canvas>
-            <p>Small daily pie chart: Green = Productive, Red = Wasted.</p>
+            <div id="todo-grid"></div>
         </section>
-
-        <section id="weekly" class="weekly-section">
-            <h2>Weekly Progress Report</h2>
-            <p>Aggregated from daily logs. Shows productive hours per day this week.</p>
-            <canvas id="weeklyChart" width="600" height="300"></canvas>
-            <p>Bar chart: Days of the week (Sun-Sat). Customize colors in script.js.</p>
+        
+        <!-- Existing Timer Sections (Unchanged) -->
+        <section class="timer-controls">
+            <label for="threshold">AFK Threshold (minutes): </label>
+            <input type="number" id="threshold" value="5" min="1" max="60">
+            <button id="start-btn">Start Session</button>
+            <button id="reset-btn">Reset</button>
+            <button id="export-btn">Export Logs (CSV)</button>
         </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Your Personal Tracker. Built with AI – Fully Customizable & Free.</p>
-    </footer>
-
+        
+        <section class="progress">
+            <h3>Today's Progress (Goal: 8 hours active)</h3>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <p id="progress-text">0 / 8 hours active today</p>
+        </section>
+        
+        <section class="session-stats">
+            <h3>Current Session</h3>
+            <p>Active Time: <span id="active-time">00:00:00</span></p>
+            <p>AFK Time: <span id="afk-time">00:00:00</span></p>
+            <p id="status">Session inactive</p>
+        </section>
+        
+        <section class="daily-stats">
+            <h3>Today's Totals</h3>
+            <p>Productive: <span id="daily-active">0h 0m</span> | Wasted: <span id="daily-afk">0h 0m</span></p>
+        </section>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
